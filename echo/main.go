@@ -12,13 +12,13 @@ func main() {
 }
 
 func startTCPEchoServer() {
-	listener, err := net.Listen("tcp", ":7")
+	listener, err := net.Listen("tcp", ":10000")
 	if err != nil {
 		panic(err)
 	}
 	defer listener.Close()
 
-	fmt.Println("Listening on :7")
+	fmt.Println("Listening on :10000")
 
 	for {
 		conn, err := listener.Accept()
