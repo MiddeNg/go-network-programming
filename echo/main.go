@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"net"
@@ -32,20 +31,14 @@ func startTCPEchoServer() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	bufReader := bufio.NewReader(conn)
 
 	var data []byte
 	var err error
-	for {
-		if data, err = io.ReadAll(bufReader); err != nil {
-			if err.Error() == "EOF" {
-				break
-			}
-			panic(err)
-		}
+
+	if data, err = io.ReadAll(conn); err != nil {
+		panic(err)
 	}
 
-	fmt.Printf("Received: %s\n", data)
 	if _, err := conn.Write(data); err != nil {
 		panic(err)
 	}
