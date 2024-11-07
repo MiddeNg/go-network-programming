@@ -25,6 +25,7 @@ func startTCPEchoServer() {
 		if err != nil {
 			panic(err)
 		}
+		fmt.Println("Accepted connection")
 		go handleConnection(conn)
 	}
 }
@@ -44,6 +45,7 @@ func handleConnection(conn net.Conn) {
 		}
 	}
 
+	fmt.Printf("Received: %s\n", data)
 	if _, err := conn.Write(data); err != nil {
 		panic(err)
 	}
