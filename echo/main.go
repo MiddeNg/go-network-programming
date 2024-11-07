@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"net"
@@ -12,13 +11,14 @@ func main() {
 }
 
 func startTCPEchoServer() {
-	listener, err := net.Listen("tcp", ":7")
+	port := 10000
+	listener, err := net.Listen("tcp", ":"+fmt.Sprint(port))
 	if err != nil {
 		panic(err)
 	}
 	defer listener.Close()
 
-	fmt.Println("Listening on :7")
+	fmt.Println("Listening on :" + fmt.Sprint(port))
 
 	for {
 		conn, err := listener.Accept()
@@ -32,20 +32,18 @@ func startTCPEchoServer() {
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
-	bufReader := bufio.NewReader(conn)
 
 	var data []byte
 	var err error
-	for {
-		if data, err = io.ReadAll(bufReader); err != nil {
-			if err.Error() == "EOF" {
-				break
-			}
-			panic(err)
+	if data, err = io.ReadAll(conn); err != nil {
+		if err.Error() == "EOF" {
+			fmt.Println("reached EOF")
 		}
+		panic(err)
 	}
-
+	fmt.Println("Read", len(data), "bytes")
 	fmt.Printf("Received: %s\n", data)
+
 	if _, err := conn.Write(data); err != nil {
 		panic(err)
 	}
