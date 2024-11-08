@@ -1,1 +1,3 @@
-module network_programming_tutorial
+module github.com/MiddeNg/go-network-programming
+
+go 1.21.6
